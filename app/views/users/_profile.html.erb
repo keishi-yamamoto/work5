@@ -1,0 +1,39 @@
+<table class="table">
+	<tr><%= attachment_image_tag(user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
+
+	<tr>
+		<th>name</th>
+		<th><%= user.name %></th>
+	</tr>
+
+	<tr>
+		<th>introduction</th>
+		<th><%= user.introduction %></th>
+	</tr>
+	<tr>
+		<th>Comments</th>
+		<th><%= user.book_comments.count %></th>
+	</tr>
+	<tr>
+		<th>follows</th>
+		<th><%= link_to user.follower.count, user_follows_path(user) %></th>
+	</tr>
+	<tr>
+		<th>followers</th>
+		<th><%= link_to user.followed.count, user_followers_path(user) %></th>
+	</tr>
+</table>
+
+<div class="row">
+	<% if user == current_user %>
+		<%= link_to '',edit_user_path(user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{user.id}" %>
+	<% else %>
+		<div class="col-xs-12">
+			<% if current_user.following?(user) %>
+			<%= link_to "Unfollow", user_relationships_path(user), method: :delete, class: "btn btn-primary" %>
+			<% else %>
+			<%= link_to "Follow", user_relationships_path(user), method: :post, class: "btn btn-success" %>
+			<% end %>
+		</div>
+	<% end %>
+</div>
